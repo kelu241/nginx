@@ -1,0 +1,42 @@
+
+services:
+    database: 
+      image:  mysql:latest
+      container_name: luciano-sql
+      environment:
+        MYSQL_ROOT_PASSWORD : 'secret'
+        MYSQL_DATABASE  : 'luciano' 
+      volumes:
+        - sql:/var/lib/mysql
+        - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+        
+      networks:
+        - luciano-network
+      ports:
+        - "3306:3306"
+      healthcheck:
+        test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-psecret"]
+        interval: 30s
+        timeout: 10s
+        retries: 5  
+
+    app:
+      build:
+        context: .
+        dockerfile: Dockerfile
+      container_name: luciano-node
+      volumes:
+        - .:/home/app/node
+      ports:
+        - "3000:3000"
+      networks:
+        - luciano-network
+      depends_on:
+        database:
+          condition: service_healthy
+networks:
+  luciano-network:
+volumes:
+  sql:
+                      
+

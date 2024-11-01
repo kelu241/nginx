@@ -1,0 +1,10 @@
+
+
+CREATE TABLE consoles (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(50) NOT NULL
+);
+
+INSERT INTO consoles (nome) VALUES ('PS5');
+INSERT INTO consoles (nome) VALUES ('NINTENDO SWITCH LITE');
+INSERT INTO consoles (nome) VALUES ('XBOX ONE ');
